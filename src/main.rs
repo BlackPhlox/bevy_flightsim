@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_dolly::prelude::DollyCursorGrab;
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 use bevy_prototype_debug_lines::*;
 use bevy_rapier3d::prelude::*;
@@ -29,6 +30,7 @@ fn main() {
         .add_plugins(DefaultPlugins)
         .add_plugin(RapierPhysicsPlugin::<NoUserData>::default())
         // .add_plugin(RapierDebugRenderPlugin::default())
+        .add_plugin(DollyCursorGrab)
         .add_plugin(DebugLinesPlugin::default())
         .add_plugin(WorldInspectorPlugin)
         .add_plugin(AirplanePlugin)

@@ -1,5 +1,5 @@
 use bevy::{input::mouse::MouseMotion, prelude::*};
-use bevy_dolly::prelude::*;
+use bevy_dolly::{prelude::*, dolly::glam};
 use bevy_inspector_egui::bevy_egui::EguiContext;
 use leafwing_input_manager::prelude::ActionState;
 
@@ -32,11 +32,11 @@ fn setup_camera(mut commands: Commands) {
 
     commands.spawn((
         Rig::builder()
-            .with(Position::new(Vec3::ZERO))
-            .with(Rotation::new(Quat::IDENTITY))
+            .with(Position::new(glam::Vec3::ZERO))
+            .with(Rotation::new(glam::Quat::IDENTITY))
             .with(YawPitch::new().yaw_degrees(45.0).pitch_degrees(-30.0))
             .with(Smooth::new_rotation(1.5))
-            .with(Arm::new(Vec3::Z * 25.0))
+            .with(Arm::new(glam::Vec3::Z * 25.0))
             .build(),
         MainCamera,
     ));
@@ -50,11 +50,11 @@ fn update_camera(
     mut motion_evr: EventReader<MouseMotion>,
     input_query: Query<&ActionState<AirplaneAction>, With<AirplaneControls>>,
 ) {
-    let plane_transform = airplane_query.single().to_owned();
+    let plane_transform = airplane_query.single().to_owned().transform_2_dolly();
 
     let mut rig = rig_query.single_mut();
 
-    rig.driver_mut::<Position>().position = plane_transform.translation;
+    rig.driver_mut::<Position>().position = plane_transform.position;
     rig.driver_mut::<Rotation>().rotation = plane_transform.rotation;
 
     if !egui_context.ctx_mut().wants_pointer_input() && buttons.pressed(MouseButton::Left) {
